@@ -1,0 +1,47 @@
+# depslib dependency file v1.0
+1739781891 source:d:\proj\tn\main.cpp
+	<iostream>
+	<SDL.h>
+	<SDL_image.h>
+
+1744607477 source:d:\proj\my game\main.cpp
+	<iostream>
+	<vector>
+	<SDL.h>
+	<SDL_image.h>
+	"graphics.h"
+	"defs.h"
+	"game.h"
+	"backgrond.h"
+	"sprites.h"
+
+1744610963 d:\proj\my game\defs.h
+
+1744610507 d:\proj\my game\graphics.h
+	<SDL.h>
+	<SDL_image.h>
+	"defs.h"
+	"backgrond.h"
+	"sprites.h"
+	"game.h"
+
+1743857633 source:d:\proj\my game\graphics.cpp
+	<iostream>
+	<SDL.h>
+	<SDL_image.h>
+	"graphics.h"
+
+1744607523 d:\proj\my game\game.h
+
+1744609545 d:\proj\my game\backgrond.h
+	<SDL.h>
+	<SDL_image.h>
+	"defs.h"
+	"graphics.h"
+
+1744517201 d:\proj\my game\sprites.h
+	<SDL.h>
+	<SDL_image.h>
+	"defs.h"
+	"backgrond.h"
+

@@ -1,69 +1,51 @@
 #include <iostream>
+#include <vector>
 #include <SDL.h>
 #include <SDL_image.h>
 #include "graphics.h"
 #include "defs.h"
-
+#include "game.h"
+#include "backgrond.h"
+#include "sprites.h"
 using namespace std;
-
-void waitUntilKeyPressed()
-{
-    SDL_Event e;
-    while (true) {
-        if ( SDL_PollEvent(&e) != 0 &&
-             (e.type == SDL_KEYDOWN || e.type == SDL_QUIT) )
-            return;
-        SDL_Delay(100);
-    }
-}
-/*
-int madfgdgin(int argc, char *argv[])
-{
-    SDL_Window* window = initSDL(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE);
-    SDL_Renderer* renderer = createRenderer(window);
-
-    SDL_Texture* background = loadTexture("bikiniBottom.jpg", renderer);
-    SDL_RenderCopy( renderer, background, NULL, NULL);
-
-    SDL_RenderPresent( renderer );
-    waitUntilKeyPressed();
-
-    SDL_Texture* spongeBob = loadTexture("Spongebob.png", renderer);
-    renderTexture(spongeBob, 200, 200, renderer);
-
-    SDL_RenderPresent( renderer );
-    waitUntilKeyPressed();
-
-    SDL_DestroyTexture( spongeBob );
-    spongeBob = NULL;
-    SDL_DestroyTexture( background );
-    background = NULL;
-
-    quitSDL(window, renderer);
-    return 0;
-}*/
 
 int main(int argc, char *argv[])
 {
     Graphics graphics;
     graphics.init();
+    ScrollingBackground background;
+    background.setTexture(graphics.loadTexture(BACKGROUND_IMG));
+    Mouse mouse;
+    mouse.x =START_POS;
+    mouse.y = SCREEN_HEIGHT / 2;
 
-    SDL_Texture* background = graphics.loadTexture("bikiniBottom.jpg");
-    graphics.prepareScene(background);
+    Sprite bird;
+    SDL_Texture* birdTexture = graphics.loadTexture(BIRD_SPRITE_FILE);
+    bird.init(birdTexture, BIRD_FRAMES, BIRD_CLIPS);
 
-    graphics.presentScene();
-    waitUntilKeyPressed();
+    bool quit = false;
+    SDL_Event event;
+    while (!quit && !gameOver(mouse)) {
+        graphics.prepareScene();
+        background.scroll(SCOLL_BG);
+        graphics.render(background);
 
-    SDL_Texture* spongeBob = graphics.loadTexture("Spongebob.png");
-    graphics.renderTexture(spongeBob, 200, 200);
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) quit = true;
+        }
+        mouse.move();
+        bird.tick();
+        graphics.render(mouse, bird);
 
-	graphics.presentScene();
-	waitUntilKeyPressed();
 
-	SDL_DestroyTexture( spongeBob );
-    spongeBob = NULL;
-    SDL_DestroyTexture( background );
-    background = NULL;
+
+        graphics.presentScene();
+        SDL_Delay(10);
+    }
+
+
+
+    SDL_DestroyTexture( background.texture );
 
     graphics.quit();
     return 0;

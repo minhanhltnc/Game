@@ -4,7 +4,9 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include "defs.h"
-
+#include "backgrond.h"
+#include "sprites.h"
+#include "game.h"
 struct Graphics {
     SDL_Renderer *renderer;
 	SDL_Window *window;
@@ -38,6 +40,12 @@ struct Graphics {
         SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
     }
 
+    void prepareScene()
+    {
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+    }
+
 	void prepareScene(SDL_Texture * background)
     {
         SDL_RenderClear(renderer);
@@ -59,17 +67,53 @@ struct Graphics {
 
         return texture;
     }
+    //load ảnh
+    SDL_Texture *loadTexture(const char *filename) const
+    {
+        SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s", filename);
 
-    void renderTexture(SDL_Texture *texture, int x, int y)
+        SDL_Texture *texture = IMG_LoadTexture(renderer, filename);
+        if (texture == NULL)
+            SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Load texture %s", IMG_GetError());
+
+        return texture;
+    }
+    //render ảnh
+
+    void renderTexture( SDL_Texture *texture, int x, int y) const
     {
         SDL_Rect dest;
 
         dest.x = x;
         dest.y = y;
-        SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+        SDL_QueryTexture( texture, NULL, NULL, &dest.w, &dest.h);
 
-        SDL_RenderCopy(renderer, texture, NULL, &dest);
+        SDL_RenderCopy( renderer, texture, NULL, &dest);
     }
+    //render background
+     void render(const ScrollingBackground& background)
+     {
+
+        renderTexture(background.texture, background.scrollingOffset, 0);
+        if (background.scrollingOffset > 0) {
+        renderTexture(background.texture, background.scrollingOffset - background.width, 0);}
+    }
+
+
+    //render spites
+     void render(int x, int y, const Sprite& sprite) {
+        const SDL_Rect* clip = sprite.getCurrentClip();
+        SDL_Rect renderQuad = {x, y, clip->w, clip->h};
+        SDL_RenderCopy(renderer, sprite.texture, clip, &renderQuad);
+    }
+    //render sprite gan voi con tro chuot
+    void render(const Mouse& mouse,const Sprite& sprite) {
+    const SDL_Rect* clip = sprite.getCurrentClip(); // Lấy khung hình hiện tại
+    SDL_Rect renderQuad = {mouse.x, mouse.y, clip->w, clip->h}; // Vị trí hiển thị tại con trỏ chuột
+    SDL_RenderCopy(renderer, sprite.texture, clip, &renderQuad); // Hiển thị
+}
+
+
 
     void blitRect(SDL_Texture *texture, SDL_Rect *src, int x, int y)
     {

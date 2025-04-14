@@ -32,10 +32,12 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="backgrond.h" />
 		<Unit filename="defs.h" />
-		<Unit filename="graphics.cpp" />
+		<Unit filename="game.h" />
 		<Unit filename="graphics.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="sprites.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
