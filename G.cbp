@@ -37,6 +37,7 @@
 		<Unit filename="game.h" />
 		<Unit filename="graphics.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="pipes.h" />
 		<Unit filename="sprites.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />

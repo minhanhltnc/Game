@@ -1,8 +1,5 @@
 #ifndef GAME_H
 #define GAME_H
-#define RUN_SPEED 0
-#define FALL_SPEED 1
-#define UP_SPEED -6
 struct Mouse {
     int x, y;
     bool isLeftButtonPressed()
@@ -12,11 +9,14 @@ struct Mouse {
     }
     void move() {
             x+=RUN_SPEED;
-            if(isLeftButtonPressed())y+=UP_SPEED;
+            if(isLeftButtonPressed()){y+=UP_SPEED;
+            }
             y+=FALL_SPEED;
     }
 
 };
+
+
 
 bool gameOver(const Mouse& mouse) {
     return  mouse.x < 0 || mouse.x >= SCREEN_WIDTH ||
