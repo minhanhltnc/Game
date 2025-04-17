@@ -15,15 +15,16 @@ const int BIRD_CLIPS[4][4] = {
 };
 
 const int BIRD_FRAMES = sizeof(BIRD_CLIPS)/sizeof(int)/4;
-const int PIPE_WIDTH = 80;
-const int PIPE_GAP = 150;
-const double PIPE_SPEED = 2.5;
+const int PIPE_WIDTH = 52;
+const int PIPE_HEIGHT=520;
+const int PIPE_GAP = 80;
+const double PIPE_SPEED = 1.0;
 //duong dan
 #define BIRD_SPRITE_FILE  "img\\extended_flappybird_sprite.png"
 #define WINDOW_TITLE "My game"
 #define BACKGROUND_IMG "img\\bg.jpg"
 #define BACKGROUND_MUSIC "sound\\background.mp3"
-#define PIPES_IMG "img\\pipe-green.png"
+#define PIPES_IMG "img\\long_pipe_1_5x.png"
 //di chuyen
 #define RUN_SPEED 0
 #define FALL_SPEED 1

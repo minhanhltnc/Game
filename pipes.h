@@ -13,8 +13,8 @@ struct pipes {
     int bottomHeight;
     pipes(double  startX) {
         x = startX;
-        topHeight = rand() % 250 + 50;
-        bottomHeight = SCREEN_HEIGHT - topHeight - PIPE_GAP;
+        topHeight = -rand()%250;
+        bottomHeight =   topHeight+PIPE_HEIGHT+PIPE_GAP; //-topHeight - PIPE_GAP;
     }
 
     void update() {

@@ -32,9 +32,13 @@ int main(int argc, char *argv[])
     Sprite bird;
     SDL_Texture* birdTexture = graphics.loadTexture(BIRD_SPRITE_FILE);
     bird.init(birdTexture, BIRD_FRAMES, BIRD_CLIPS);
-    //
-    bool quit=false;
+    //pipe
+    pipes pipe(400);
+    SDL_Texture* pipeTexture = graphics.loadTexture(PIPES_IMG);
+
+
     SDL_Event event;
+    bool quit=false;
     while (!quit && !gameOver(mouse)) {
         graphics.prepareScene();
         background.scroll(SCOLL_BG);
@@ -52,6 +56,9 @@ int main(int argc, char *argv[])
 
         bird.tick();
         graphics.render(mouse, bird);
+        graphics.renderPipe( pipe, pipeTexture);
+        pipe.update();
+        cerr<<pipe.bottomHeight<<' ';
         graphics.presentScene();
         SDL_Delay(10);
     }
