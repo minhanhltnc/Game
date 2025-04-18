@@ -13,13 +13,17 @@ struct pipes {
     int bottomHeight;
     pipes(double  startX) {
         x = startX;
-        topHeight = -rand()%250;
-        bottomHeight =   topHeight+PIPE_HEIGHT+PIPE_GAP; //-topHeight - PIPE_GAP;
+        topHeight = -rand()%200;
+        bottomHeight =   topHeight+PIPE_HEIGHT+PIPE_GAP;
     }
 
     void update() {
         x -= PIPE_SPEED;
-    }
+        if(x<0)
+        {x=SCREEN_WIDTH;
+            topHeight = -rand()%300 ;
+            bottomHeight =   topHeight+PIPE_HEIGHT+PIPE_GAP; }
+        }
     bool isOffScreen() const {
         return x + PIPE_WIDTH < 0;
     }

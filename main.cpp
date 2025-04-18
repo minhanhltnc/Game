@@ -10,7 +10,6 @@
 #include "sprites.h"
 #include "pipes.h"
 using namespace std;
-
 int main(int argc, char *argv[])
 {
     Graphics graphics;
@@ -32,8 +31,8 @@ int main(int argc, char *argv[])
     Sprite bird;
     SDL_Texture* birdTexture = graphics.loadTexture(BIRD_SPRITE_FILE);
     bird.init(birdTexture, BIRD_FRAMES, BIRD_CLIPS);
-    //pipe
-    pipes pipe(400);
+    vector<pipes> pipeList;
+    initPipes(pipeList);
     SDL_Texture* pipeTexture = graphics.loadTexture(PIPES_IMG);
 
 
@@ -56,9 +55,12 @@ int main(int argc, char *argv[])
 
         bird.tick();
         graphics.render(mouse, bird);
-        graphics.renderPipe( pipe, pipeTexture);
-        pipe.update();
-        cerr<<pipe.bottomHeight<<' ';
+        for (int i = 0; i < NUM_PIPES; ++i)
+        {
+            graphics.renderPipe( pipeList[i], pipeTexture);
+            pipeList[i].update();
+
+        }
         graphics.presentScene();
         SDL_Delay(10);
     }

@@ -4,7 +4,7 @@
 	<SDL.h>
 	<SDL_image.h>
 
-1744853164 source:d:\proj\my game\main.cpp
+1744964699 source:d:\proj\my game\main.cpp
 	<iostream>
 	<vector>
 	<SDL.h>
@@ -17,7 +17,7 @@
 	"sprites.h"
 	"pipes.h"
 
-1744853769 d:\proj\my game\defs.h
+1744964391 d:\proj\my game\defs.h
 
 1744857802 d:\proj\my game\graphics.h
 	<SDL.h>
@@ -35,7 +35,7 @@
 	<SDL_image.h>
 	"graphics.h"
 
-1744692782 d:\proj\my game\game.h
+1744860555 d:\proj\my game\game.h
 
 1744685942 d:\proj\my game\backgrond.h
 	<SDL.h>
@@ -51,7 +51,7 @@
 	"defs.h"
 	"backgrond.h"
 
-1744853636 d:\proj\my game\pipes.h
+1744859585 d:\proj\my game\pipes.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>

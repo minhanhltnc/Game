@@ -1,7 +1,11 @@
 #ifndef GAME_H
 #define GAME_H
+#include <vector>
+#include "pipes.h"
+#include "defs.h"
+using namespace std;
 struct Mouse {
-    int x, y;
+    double x, y;
     bool isLeftButtonPressed()
     {
         Uint32 buttonState = SDL_GetMouseState(NULL, NULL);
@@ -15,6 +19,12 @@ struct Mouse {
     }
 
 };
+void initPipes(vector<pipes>& pipeList)
+{
+    for (int i = 0; i < NUM_PIPES; ++i) {
+        pipeList.emplace_back(START_X + i * PIPE_SPACING);
+    }
+}
 
 
 
