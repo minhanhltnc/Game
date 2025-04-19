@@ -4,11 +4,13 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
+#include <vector>
 #include "defs.h"
 #include "backgrond.h"
 #include "sprites.h"
 #include "game.h"
 #include "pipes.h"
+#include "game.cpp"
 struct Graphics {
     SDL_Renderer *renderer;
 	SDL_Window *window;
@@ -18,7 +20,7 @@ struct Graphics {
         SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "%s: %s", msg, error);
         SDL_Quit();
     }
-
+///init
 	void init() {
         if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
             logErrorAndExit("SDL_Init", SDL_GetError());
@@ -61,7 +63,7 @@ struct Graphics {
     {
         SDL_RenderPresent(renderer);
     }
-
+///load texture
     SDL_Texture *loadTexture(const char *filename)
     {
         SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s", filename);
@@ -72,7 +74,9 @@ struct Graphics {
 
         return texture;
     }
-    //load ảnh
+
+
+///load ảnh
     SDL_Texture *loadTexture(const char *filename) const
     {
         SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s", filename);
@@ -83,8 +87,9 @@ struct Graphics {
 
         return texture;
     }
-    //render ảnh
 
+
+///render ảnh
     void renderTexture( SDL_Texture *texture,const int x,const int y) const
     {
         SDL_Rect dest;
@@ -95,8 +100,11 @@ struct Graphics {
 
         SDL_RenderCopy( renderer, texture, NULL, &dest);
     }
-    //render pipes
-   void renderPipe(const pipes& pipe, SDL_Texture* pipeTexture) {
+
+
+///render pipes
+   void renderPipe
+   (const pipes& pipe, SDL_Texture* pipeTexture) {
     int texW, texH;
     SDL_QueryTexture(pipeTexture, nullptr, nullptr, &texW, &texH);
     //Ống dưới(không bị lật ngược)
@@ -113,11 +121,18 @@ struct Graphics {
     topRect.w = texW;
     topRect.h = texH;
     SDL_RenderCopyEx(renderer, pipeTexture, nullptr, &topRect, 0, nullptr, SDL_FLIP_VERTICAL);
-}
+    }
+    void renderPipes(vector<pipes>& pipeList, SDL_Texture* pipeTexture)
+    {
+        for (int i = 0; i < NUM_PIPES; ++i)
+        {
+            renderPipe(pipeList[i], pipeTexture); // Gọi phương thức renderPipe đã có
+        }
+    }
 
 
 
-    //render background
+///render background
      void render(const ScrollingBackground& background)
      {
 
@@ -128,7 +143,7 @@ struct Graphics {
 
 
     //render spites
-     void render(int x, int y, const Sprite& sprite) {
+     void render(double x, double y, const Sprite& sprite) {
         const SDL_Rect* clip = sprite.getCurrentClip();
         SDL_Rect renderQuad = {x, y, clip->w, clip->h};
         SDL_RenderCopy(renderer, sprite.texture, clip, &renderQuad);

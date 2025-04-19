@@ -10,19 +10,17 @@
 #include "sprites.h"
 #include "pipes.h"
 using namespace std;
+
 int main(int argc, char *argv[])
 {
     Graphics graphics;
     graphics.init();
-
     //Background
     ScrollingBackground background;
     background.setTexture(graphics.loadTexture(BACKGROUND_IMG));
-
     //nhac
     Mix_Music *gMusic = graphics.loadMusic(BACKGROUND_MUSIC);
     graphics.play(gMusic);
-
     //chuot
     Mouse mouse;
     mouse.x =START_POS;
@@ -34,8 +32,6 @@ int main(int argc, char *argv[])
     vector<pipes> pipeList;
     initPipes(pipeList);
     SDL_Texture* pipeTexture = graphics.loadTexture(PIPES_IMG);
-
-
     SDL_Event event;
     bool quit=false;
     while (!quit && !gameOver(mouse)) {
@@ -52,15 +48,10 @@ int main(int argc, char *argv[])
             graphics.play(gChunk);
         }
         mouse.move();
-
         bird.tick();
         graphics.render(mouse, bird);
-        for (int i = 0; i < NUM_PIPES; ++i)
-        {
-            graphics.renderPipe( pipeList[i], pipeTexture);
-            pipeList[i].update();
-
-        }
+        updatePipes(pipeList);
+        graphics.renderPipes( pipeList, pipeTexture);
         graphics.presentScene();
         SDL_Delay(10);
     }
@@ -69,3 +60,4 @@ int main(int argc, char *argv[])
     graphics.quit();
     return 0;
 }
+
