@@ -15,43 +15,43 @@ int main(int argc, char *argv[])
 {
     Graphics graphics;
     graphics.init();
-    //Background
+    ///Background
     ScrollingBackground background;
     background.setTexture(graphics.loadTexture(BACKGROUND_IMG));
-    //nhac
+    ///nhac
     Mix_Music *gMusic = graphics.loadMusic(BACKGROUND_MUSIC);
     graphics.play(gMusic);
-    //chuot
-    Mouse mouse;
-    mouse.x =START_POS;
-    mouse.y = SCREEN_HEIGHT / 2;
+    ///chuot
+    Mouse mouse(START_POS,SCREEN_HEIGHT / 2);
     //
     Sprite bird;
     SDL_Texture* birdTexture = graphics.loadTexture(BIRD_SPRITE_FILE);
     bird.init(birdTexture, BIRD_FRAMES, BIRD_CLIPS);
     vector<pipes> pipeList;
-    initPipes(pipeList);
+    ///pipe
     SDL_Texture* pipeTexture = graphics.loadTexture(PIPES_IMG);
+    initPipes(pipeList,pipeTexture);
     SDL_Event event;
     bool quit=false;
-    while (!quit && !gameOver(mouse)) {
+    while (!quit ) {
         graphics.prepareScene();
-        background.scroll(SCOLL_BG);
         graphics.render(background);
-
         while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) quit = true;
+            if (event.type == SDL_QUIT)
+                quit = true;
         }
-        if(mouse.isLeftButtonPressed())
-        {
-            Mix_Chunk *gChunk = graphics.loadSound("sound\\audio\\wing.wav");
-            graphics.play(gChunk);
+        if (!gameOver(mouse,pipeList)) {
+            if (mouse.isLeftButtonPressed()) {
+                Mix_Chunk *gChunk = graphics.loadSound("sound\\audio\\wing.wav");
+                graphics.play(gChunk);
+            }
+            mouse.move();
+            bird.tick();
+            updatePipes(pipeList);
+            background.scroll(SCOLL_BG);
         }
-        mouse.move();
-        bird.tick();
         graphics.render(mouse, bird);
-        updatePipes(pipeList);
-        graphics.renderPipes( pipeList, pipeTexture);
+        graphics.renderPipes(pipeList, pipeTexture);
         graphics.presentScene();
         SDL_Delay(10);
     }

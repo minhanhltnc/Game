@@ -32,8 +32,8 @@ const double PIPE_SPACING = 200; // khoảng cách giữa các pipes
 #define PIPES_IMG "img\\long_pipe_1_5x.png"
 //di chuyen
 #define RUN_SPEED 0
-#define FALL_SPEED 3.25
-#define UP_SPEED -6
+#define FALL_SPEED 4
+#define UP_SPEED -8
 
 
 #endif

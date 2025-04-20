@@ -103,24 +103,9 @@ struct Graphics {
 
 
 ///render pipes
-   void renderPipe
-   (const pipes& pipe, SDL_Texture* pipeTexture) {
-    int texW, texH;
-    SDL_QueryTexture(pipeTexture, nullptr, nullptr, &texW, &texH);
-    //Ống dưới(không bị lật ngược)
-    SDL_Rect bottomRect;
-    bottomRect.x = pipe.x;
-    bottomRect.y = pipe.bottomHeight;
-    bottomRect.w = texW;
-    bottomRect.h = texH;
-    SDL_RenderCopy(renderer, pipeTexture, nullptr, &bottomRect);
-    // Ống  (bị lật ngược)
-    SDL_Rect topRect;
-    topRect.x = pipe.x;
-    topRect.y = pipe.topHeight;
-    topRect.w = texW;
-    topRect.h = texH;
-    SDL_RenderCopyEx(renderer, pipeTexture, nullptr, &topRect, 0, nullptr, SDL_FLIP_VERTICAL);
+   void renderPipe(const pipes& pipe, SDL_Texture* pipeTexture) {
+    SDL_RenderCopy(renderer, pipeTexture, nullptr, &pipe.bottomRect);
+    SDL_RenderCopyEx(renderer, pipeTexture, nullptr, &pipe.topRect, 0, nullptr, SDL_FLIP_VERTICAL);
     }
     void renderPipes(vector<pipes>& pipeList, SDL_Texture* pipeTexture)
     {

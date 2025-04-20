@@ -1,36 +1,57 @@
 #ifndef GAME_H
 #define GAME_H
 #include <vector>
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
-#include "graphics.h"
 #include "defs.h"
-#include "backgrond.h"
 #include "sprites.h"
 #include "pipes.h"
-
+#define CHEESE_SIZE 10
+#define MOUSE_SIZE 20
 using namespace std;
+bool inside(int x, int y, SDL_Rect r) {
+    return x > r.x && x < r.x+r.w && y > r.y && y < r.y+r.h;
+}
+
+bool overlap(const SDL_Rect& r1, const SDL_Rect& r2) {
+    return inside(r1.x, r1.y, r2) || inside(r1.x + r1.w, r1.y, r2) ||
+            inside(r1.x, r1.y+r1.h, r2) || inside(r1.x+r1.w, r1.y+r1.h, r2);
+}
 struct Mouse {
-    double x, y;
+    SDL_Rect rect;
+    int x = START_POS, y = SCREEN_HEIGHT / 2;
+
+
+    Mouse(int x, int y) {
+        rect.x = x;
+        rect.y = y;
+        rect.h = MOUSE_SIZE;
+        rect.w = MOUSE_SIZE;
+    }
+
     bool isLeftButtonPressed()
     {
         Uint32 buttonState = SDL_GetMouseState(NULL, NULL);
         return (buttonState & SDL_BUTTON(SDL_BUTTON_LEFT)) != 0;
     }
     void move() {
-            x+=RUN_SPEED;
             if(isLeftButtonPressed()){y+=UP_SPEED;
             }
             y+=FALL_SPEED;
+            rect.x = x;
+            rect.y = y;
+    }
+    bool collide(const vector<pipes>& pipeList) const
+    {
+        for (int i = 0; i < NUM_PIPES; ++i)
+        {if (overlap(rect, pipeList[i].bottomRect) || overlap(rect, pipeList[i].topRect))return true;}
+        return false;
     }
 
 
 };
-void initPipes(vector<pipes>& pipeList)
+void initPipes(vector<pipes>& pipeList,SDL_Texture* pipeTexture)
 {
     for (int i = 0; i < NUM_PIPES; ++i) {
-        pipeList.emplace_back(START_X + i * PIPE_SPACING);
+        pipeList.emplace_back(START_X + i * PIPE_SPACING,pipeTexture);
     }
 }
 inline void updatePipes(vector<pipes>& pipeList)
@@ -44,9 +65,11 @@ inline void updatePipes(vector<pipes>& pipeList)
 
 
 
-bool gameOver(const Mouse& mouse) {
+bool gameOver(const Mouse& mouse,vector<pipes>& pipeList)
+{
     return  mouse.x < 0 || mouse.x >= SCREEN_WIDTH ||
-           mouse.y < 0 || mouse.y >= SCREEN_HEIGHT;
+           mouse.y < 0 || mouse.y >= SCREEN_HEIGHT ||
+           mouse.collide(pipeList); // Kiểm tra va chạm với các ống
 }
 
 #endif // GAME_H
