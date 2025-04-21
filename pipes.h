@@ -35,7 +35,7 @@ struct pipes {
     void update()
     {
         x -= PIPE_SPEED;
-        if(x<0)
+        if(isOffScreen())
         {
             x=SCREEN_WIDTH;
             topHeight = -rand()%300 ;

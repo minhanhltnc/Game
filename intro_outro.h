@@ -9,6 +9,14 @@
 #include "graphics.h"
 #include "defs.h"
 
+#define TITLE "Flappy Bird"
+#define PLAY_BUT "Play"
+#define SOUND_ON_BUT "Sound: On"
+#define SOUND_OFF_BUT "Sound: Off"
+#define GAMEOVER_BUT "Game Over"
+#define REPLAY_BUT "Play Again"
+#define BACK_MENU_BUT "Back to Menu"
+
 // Enum game state
 enum GameState {
     MENU,
@@ -51,10 +59,10 @@ void renderButton(Graphics& graphics, Button& button) {
 
 ///render menu
 void renderMenu(Graphics& graphics, TTF_Font* font, bool soundOn) {
-    Button titleButton = createButton("Flappy Bird", font, graphics, -50);
-    Button playButton = createButton("Play", font, graphics, 100);
+    Button titleButton = createButton(TITLE, font, graphics, -50);
+    Button playButton = createButton(PLAY_BUT, font, graphics, 100);
 
-    string soundText = soundOn ? "Sound: On" : "Sound: Off";
+    string soundText = soundOn ? SOUND_ON_BUT : SOUND_OFF_BUT;
     Button soundButton = createButton(soundText, font, graphics, 180);
 
     /// Render buttons
@@ -69,9 +77,9 @@ void renderMenu(Graphics& graphics, TTF_Font* font, bool soundOn) {
 
 /// render game over screen
 void renderGameOver(Graphics& graphics, TTF_Font* font) {
-    Button overButton = createButton("Game Over", font, graphics, -100);
-    Button playAgainButton = createButton("Play Again", font, graphics, 0);
-    Button backToMenuButton = createButton("Back to Menu", font, graphics, 100);
+    Button overButton = createButton(GAMEOVER_BUT, font, graphics, -100);
+    Button playAgainButton = createButton(REPLAY_BUT, font, graphics, 0);
+    Button backToMenuButton = createButton(BACK_MENU_BUT, font, graphics, 100);
 
     // Render buttons
     renderButton(graphics, overButton);

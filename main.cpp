@@ -22,31 +22,31 @@ int main(int argc, char *argv[]) {
     bool quit = false;
     GameState currentState = MENU;
     bool soundOn = true;
-
-    /// BG
+///set up các tài nguyên game
+    // BG
     ScrollingBackground background;
     background.setTexture(graphics.loadTexture(BACKGROUND_IMG));
 
-    /// MUSIC
+    // MUSIC
     Mix_Music *gMusic = graphics.loadMusic(BACKGROUND_MUSIC);
     if (soundOn) graphics.play(gMusic);
+    Mix_Chunk *gChunk_wing = graphics.loadSound(CHUNK_WING);
+    // Fonts
+    TTF_Font* font = graphics.loadFont(FONT_NAME, 90);
+    TTF_Font* fontScoreInGameOver = graphics.loadFont(FONT_NAME, 125);
+    TTF_Font* fontScoreInPlaying = graphics.loadFont(FONT_NAME, 50);
 
-    /// Fonts
-    TTF_Font* font = graphics.loadFont("img//FlappyBirdRegular-9Pq0.ttf", 100);
-    TTF_Font* fontScoreInGameOver = graphics.loadFont("img//FlappyBirdRegular-9Pq0.ttf", 120);
-    TTF_Font* fontScoreInPlaying = graphics.loadFont("img//FlappyBirdRegular-9Pq0.ttf", 50);
+    // Buttons
+    Button playButton = createButton(PLAY_BUT, font, graphics, 100);
+    Button playAgainButton = createButton(REPLAY_BUT, font, graphics, 0);
+    Button backToMenuButton = createButton(BACK_MENU_BUT, font, graphics, 100);
 
-    /// Buttons
-    Button playButton = createButton("Play", font, graphics, 100);
-    Button playAgainButton = createButton("Play Again", font, graphics, 0);
-    Button backToMenuButton = createButton("Back to Menu", font, graphics, 100);
-
-    /// Mouse
+    // Mouse
     Mouse mouse(START_POS, SCREEN_HEIGHT / 2);
     Sprite bird;
     SDL_Texture* birdTexture = graphics.loadTexture(BIRD_SPRITE_FILE);
     bird.init(birdTexture, BIRD_FRAMES, BIRD_CLIPS);
-
+    //pipes
     vector<pipes> pipeList;
     SDL_Texture* pipeTexture = graphics.loadTexture(PIPES_IMG);
     initPipes(pipeList, pipeTexture);
@@ -57,13 +57,13 @@ int main(int argc, char *argv[]) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT)
                 quit = true;
-
+///các gamestate, tương tác với các nút ở menu và màn hình gameover
             if (currentState == MENU && event.type == SDL_MOUSEBUTTONDOWN) {
                 int mouseX = event.button.x;
                 int mouseY = event.button.y;
 
-                Button playBtn = createButton("Play", font, graphics, 100);
-                string soundText = soundOn ? "Sound: On" : "Sound: Off";
+                Button playBtn = createButton(PLAY_BUT, font, graphics, 100);
+                string soundText = soundOn ? SOUND_ON_BUT : SOUND_OFF_BUT;
                 Button soundBtn = createButton(soundText, font, graphics, 200);
 
                 if (isButtonClicked(mouseX, mouseY, playBtn)) {
@@ -82,8 +82,8 @@ int main(int argc, char *argv[]) {
                 int mouseX = event.button.x;
                 int mouseY = event.button.y;
 
-                Button playAgainBtn = createButton("Play Again", font, graphics, 0);
-                Button backBtn = createButton("Back to Menu", font, graphics, 100);
+                Button playAgainBtn = createButton(REPLAY_BUT, font, graphics, 0);
+                Button backBtn = createButton(BACK_MENU_BUT, font, graphics, 100);
 
                 if (isButtonClicked(mouseX, mouseY, playAgainBtn)) {
                     currentState = PLAYING;
@@ -105,19 +105,20 @@ int main(int argc, char *argv[]) {
 
         graphics.render(background);
 
-        // Render menu based on the game state
-        if (currentState == MENU) {
+/// Render theo gamestate
+        if (currentState == MENU)
+        {
             renderMenu(graphics, font, soundOn);
         }
         else if (currentState == PLAYING) {
             if (!gameOver(mouse, pipeList)) {
                 if (mouse.isLeftButtonPressed()) {
-                    if (soundOn) {
-                        Mix_Chunk *gChunk = graphics.loadSound("sound\\audio\\wing.wav");
-                        graphics.play(gChunk);
+                    if (soundOn)
+                    {
+                        graphics.play(gChunk_wing);
                     }
                 }
-
+                ///update game
                 mouse.move();
                 bird.tick();
                 updatePipes(pipeList);
@@ -126,19 +127,20 @@ int main(int argc, char *argv[]) {
                 graphics.renderPipes(pipeList, pipeTexture);
                 mouse.updateScore(pipeList);
                 graphics.renderScore(fontScoreInPlaying, mouse.score, 20, 20, {255, 255, 255, 255});
-            } else {
+            }
+            else {
                 currentState = GAME_OVER;
             }
         }
         else if (currentState == GAME_OVER) {
             renderGameOver(graphics, font);
-            graphics.renderScore(fontScoreInGameOver, mouse.score, 100, 120, {255, 255, 0, 255});
+            graphics.renderScore(fontScoreInGameOver, mouse.score, 150, 120, {255, 255, 0, 255});
         }
 
         graphics.presentScene();
         SDL_Delay(10);
     }
-
+///clear
     SDL_DestroyTexture(background.texture);
     TTF_CloseFont(font);
     TTF_CloseFont(fontScoreInPlaying);
