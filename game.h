@@ -18,13 +18,22 @@ bool overlap(const SDL_Rect& r1, const SDL_Rect& r2) {
 struct Mouse {
     SDL_Rect rect;
     int x = START_POS, y = SCREEN_HEIGHT / 2;
-
+    int score ; vector<bool> passedPipe;
 
     Mouse(int x, int y) {
         rect.x = x;
         rect.y = y;
         rect.h = MOUSE_SIZE;
         rect.w = MOUSE_SIZE;
+        score=0;
+    }
+    void setPos(int x, int y)
+    {
+        rect.x = x;
+        rect.y = y;
+        rect.h = MOUSE_SIZE;
+        rect.w = MOUSE_SIZE;
+        score=0;
     }
 
     bool isLeftButtonPressed()
@@ -45,10 +54,23 @@ struct Mouse {
         {if (overlap(rect, pipeList[i].bottomRect) || overlap(rect, pipeList[i].topRect))return true;}
         return false;
     }
+    void updateScore(const vector<pipes>& pipeList) {
+        if (passedPipe.size() != pipeList.size()) {
+            passedPipe.resize(pipeList.size(), false);
+        }
+
+        for (int i = 0; i < pipeList.size(); ++i) {
+            int pipeRight = pipeList[i].topRect.x + pipeList[i].topRect.w;
+            if (!passedPipe[i] && pipeRight < x) {
+                score++;
+                passedPipe[i] = true;
+            }
+        }
+    }
 
 
 };
-void initPipes(vector<pipes>& pipeList,SDL_Texture* pipeTexture)
+void initPipes( vector<pipes>& pipeList, SDL_Texture* pipeTexture)
 {
     for (int i = 0; i < NUM_PIPES; ++i) {
         pipeList.emplace_back(START_X + i * PIPE_SPACING,pipeTexture);

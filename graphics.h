@@ -4,7 +4,9 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
 #include <vector>
+#include <string>
 #include "defs.h"
 #include "backgrond.h"
 #include "sprites.h"
@@ -26,8 +28,6 @@ struct Graphics {
             logErrorAndExit("SDL_Init", SDL_GetError());
 
         window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-        //full screen
-        //window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_FULLSCREEN_DESKTOP);
         if (window == nullptr) logErrorAndExit("CreateWindow", SDL_GetError());
 
         if (!IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG))
@@ -44,6 +44,12 @@ struct Graphics {
         if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 ) {
         logErrorAndExit( "SDL_mixer could not initialize! SDL_mixer Error: %s\n",
                     Mix_GetError() );}
+        //font
+        if (TTF_Init() == -1) {
+            logErrorAndExit("SDL_ttf could not initialize! SDL_ttf Error: ",
+                             TTF_GetError());
+        }
+
 
     }
 
@@ -64,19 +70,6 @@ struct Graphics {
         SDL_RenderPresent(renderer);
     }
 ///load texture
-    SDL_Texture *loadTexture(const char *filename)
-    {
-        SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s", filename);
-
-        SDL_Texture *texture = IMG_LoadTexture(renderer, filename);
-        if (texture == NULL)
-            SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Load texture %s", IMG_GetError());
-
-        return texture;
-    }
-
-
-///load ảnh
     SDL_Texture *loadTexture(const char *filename) const
     {
         SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s", filename);
@@ -103,11 +96,11 @@ struct Graphics {
 
 
 ///render pipes
-   void renderPipe(const pipes& pipe, SDL_Texture* pipeTexture) {
+   void renderPipe(const pipes& pipe,  SDL_Texture* pipeTexture) const{
     SDL_RenderCopy(renderer, pipeTexture, nullptr, &pipe.bottomRect);
     SDL_RenderCopyEx(renderer, pipeTexture, nullptr, &pipe.topRect, 0, nullptr, SDL_FLIP_VERTICAL);
     }
-    void renderPipes(vector<pipes>& pipeList, SDL_Texture* pipeTexture)
+    void renderPipes(const vector<pipes>& pipeList, SDL_Texture* pipeTexture)const
     {
         for (int i = 0; i < NUM_PIPES; ++i)
         {
@@ -118,7 +111,7 @@ struct Graphics {
 
 
 ///render background
-     void render(const ScrollingBackground& background)
+     void render(const ScrollingBackground& background)const
      {
 
         renderTexture(background.texture, background.scrollingOffset, 0);
@@ -127,21 +120,21 @@ struct Graphics {
     }
 
 
-    //render spites
-     void render(double x, double y, const Sprite& sprite) {
+///render spites
+     void render(double x, double y, const Sprite& sprite)const {
         const SDL_Rect* clip = sprite.getCurrentClip();
         SDL_Rect renderQuad = {x, y, clip->w, clip->h};
         SDL_RenderCopy(renderer, sprite.texture, clip, &renderQuad);
     }
-    //render sprite gan voi con tro chuot
-    void render(const Mouse& mouse,const Sprite& sprite) {
+///render sprite gan voi con tro chuot
+    void render(const Mouse& mouse,const Sprite& sprite) const {
     const SDL_Rect* clip = sprite.getCurrentClip(); // Lấy khung hình hiện tại
     SDL_Rect renderQuad = {mouse.x, mouse.y, clip->w, clip->h}; // Vị trí hiển thị tại con trỏ chuột
     SDL_RenderCopy(renderer, sprite.texture, clip, &renderQuad); // Hiển thị
 }
-    //music and sounds
+///music and sounds
 
-    Mix_Music *loadMusic(const char* path)
+    Mix_Music *loadMusic(const char* path)const
     {
         Mix_Music *gMusic = Mix_LoadMUS(path);
         if (gMusic == nullptr) {
@@ -162,7 +155,7 @@ struct Graphics {
         }
     }
 
-    Mix_Chunk* loadSound(const char* path) {
+    Mix_Chunk* loadSound(const char* path) const {
         Mix_Chunk* gChunk = Mix_LoadWAV(path);
         if (gChunk == nullptr) {
             SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR,
@@ -175,6 +168,51 @@ struct Graphics {
             Mix_PlayChannel( -1, gChunk, 0 );
         }
     }
+///FONT
+    TTF_Font* loadFont(const char* path, int size) const
+    {
+        TTF_Font* gFont = TTF_OpenFont( path, size );
+        if (gFont == nullptr) {
+            SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION,
+                           SDL_LOG_PRIORITY_ERROR,
+                           "Load font %s", TTF_GetError());
+        }
+    }
+     SDL_Texture* renderText(const char* text,TTF_Font* font, SDL_Color textColor)const
+    {
+        SDL_Surface* textSurface =
+                TTF_RenderText_Solid( font, text, textColor );
+        if( textSurface == nullptr ) {
+            SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION,
+                           SDL_LOG_PRIORITY_ERROR,
+                           "Render text surface %s", TTF_GetError());
+            return nullptr;
+        }
+
+        SDL_Texture* texture =
+                SDL_CreateTextureFromSurface( renderer, textSurface );
+        if( texture == nullptr ) {
+            SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION,
+                           SDL_LOG_PRIORITY_ERROR,
+                           "Create texture from text %s", SDL_GetError());
+        }
+        SDL_FreeSurface( textSurface );
+        return texture;
+    }
+    renderScore(TTF_Font* font, const int score,const int x,const int y, SDL_Color color)const {
+    string scoreText = "Score: " + std::to_string(score);
+    SDL_Texture* scoreTex = renderText(scoreText.c_str(), font, color);
+
+    if (scoreTex != nullptr) {
+        int w, h;
+        SDL_QueryTexture(scoreTex, NULL, NULL, &w, &h);
+        renderTexture(scoreTex, x, y);
+        SDL_DestroyTexture(scoreTex);
+    }
+}
+
+
+
 
 
     void blitRect(SDL_Texture *texture, SDL_Rect *src, int x, int y)
@@ -197,6 +235,8 @@ struct Graphics {
         SDL_DestroyWindow(window);
         SDL_Quit();
         Mix_Quit();
+        TTF_Quit();
+
 
     }
 };
