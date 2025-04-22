@@ -55,34 +55,34 @@ struct Graphics {
 
     void prepareScene()
     {
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        SDL_RenderClear(renderer);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);//màu đen
+        SDL_RenderClear(renderer);//vẽ hàm hình đen
     }
 
 	void prepareScene(SDL_Texture * background)
     {
-        SDL_RenderClear(renderer);
-        SDL_RenderCopy( renderer, background, NULL, NULL);
+        SDL_RenderClear(renderer);//xóa màn hình trước khi vẽ
+        SDL_RenderCopy( renderer, background, NULL, NULL);//sao chép texture background lên bộ vẽ
     }
 
     void presentScene()
     {
-        SDL_RenderPresent(renderer);
+        SDL_RenderPresent(renderer);//cập nhật màn hình(bao gồm tất cả những gì đc vẽ)
     }
 ///load texture
     SDL_Texture *loadTexture(const char *filename) const
     {
-        SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s", filename);
+        SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s", filename);//Ghi log thông tin rằng chương trình đang tải tệp hình ảnh
 
-        SDL_Texture *texture = IMG_LoadTexture(renderer, filename);
+        SDL_Texture *texture = IMG_LoadTexture(renderer, filename);//tải ảnh
         if (texture == NULL)
-            SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Load texture %s", IMG_GetError());
+            SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Load texture %s", IMG_GetError());//báo lỗi
 
         return texture;
     }
 
 
-///render ảnh
+///render text ture
     void renderTexture( SDL_Texture *texture,const int x,const int y) const
     {
         SDL_Rect dest;
@@ -114,7 +114,7 @@ struct Graphics {
      void render(const ScrollingBackground& background)const
      {
 
-        renderTexture(background.texture, background.scrollingOffset, 0);
+        renderTexture(background.texture, background.scrollingOffset, 0);//rendertexture được viết ở trên
         if (background.scrollingOffset > 0) {
         renderTexture(background.texture, background.scrollingOffset - background.width, 0);}
     }
