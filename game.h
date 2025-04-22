@@ -64,7 +64,7 @@ int lastScoredPipeIndex = -1; // Lưu chỉ số pipe đã được cộng đi�
 
     void updateScore(const vector<pipes>& pipeList) {
     Uint32 currentTime = SDL_GetTicks(); // Lấy thời gian hiện tại (ms)
-    if (currentTime - lastScoreTime < 10)
+    if (currentTime - lastScoreTime < 90)
     { // Cách nhau ít nhất 90ms
         return ; // Không cộng điểm liên tục
     }

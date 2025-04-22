@@ -22,7 +22,7 @@
 
 1745262069 d:\proj\my game\defs.h
 
-1745242769 d:\proj\my game\graphics.h
+1745289455 d:\proj\my game\graphics.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>
@@ -42,7 +42,7 @@
 	<SDL_image.h>
 	"graphics.h"
 
-1745258088 d:\proj\my game\game.h
+1745292343 d:\proj\my game\game.h
 	<vector>
 	"defs.h"
 	"sprites.h"
