@@ -20,6 +20,7 @@ struct Mouse {
     int x = START_POS, y = SCREEN_HEIGHT / 2;
     int score ; vector<bool> passedPipe;
     int UP_SPEED,FALL_SPEED;
+    int lastScoredPipeIndex = -1; // Lưu chỉ số pipe đã được cộng điểm gần nhất
 
     Mouse(int x, int y) {
         rect.x = x;
@@ -36,6 +37,7 @@ struct Mouse {
         rect.h = MOUSE_SIZE;
         rect.w = MOUSE_SIZE;
         score=0;
+        lastScoredPipeIndex = -1;
     }
 
     bool isLeftButtonPressed()
@@ -58,23 +60,18 @@ struct Mouse {
     }
 
 
-Uint32 lastScoreTime = 0;
-int lastScoredPipeIndex = -1; // Lưu chỉ số pipe đã được cộng điểm gần nhất
+
 
 
     void updateScore(const vector<pipes>& pipeList) {
-    Uint32 currentTime = SDL_GetTicks(); // Lấy thời gian hiện tại (ms)
-    if (currentTime - lastScoreTime < 90)
-    { // Cách nhau ít nhất 90ms
-        return ; // Không cộng điểm liên tục
-    }
 
-    for (int i = 0; i < pipeList.size(); ++i) {
+    for (int i = 0; i < pipeList.size(); ++i)
+    {
         int pipeRight = pipeList[i].topRect.x + pipeList[i].topRect.w;
-        if (pipeRight < x && lastScoredPipeIndex != i) {
+        if (pipeRight < x&& lastScoredPipeIndex != i ) {
             score++;
             lastScoredPipeIndex = i;
-            lastScoreTime = currentTime; // Cập nhật thời gian điể
+            break;// Cập nhật thời gian điể
 
     }
     }

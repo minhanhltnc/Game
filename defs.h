@@ -4,7 +4,7 @@
 #define WINDOW_TITLE "Flappy Bird Remake"
 const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 800;
-const int START_POS=150;
+const int START_POS=100;
 const double SCOLL_BG=3;
 
 const int BIRD_CLIPS[4][4] = {
