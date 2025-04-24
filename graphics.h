@@ -200,8 +200,8 @@ struct Graphics {
         SDL_FreeSurface( textSurface );
         return texture;
     }
-    void renderScore(TTF_Font* font, const int score,const int x,const int y, SDL_Color color)const {
-    string scoreText = "Score: " + std::to_string(score);
+    void renderScore(TTF_Font* font,const string s, const int score,const int x,const int y, SDL_Color color)const {
+    string scoreText = s+std::to_string(score);
     SDL_Texture* scoreTex = renderText(scoreText.c_str(), font, color);
 
     if (scoreTex != nullptr) {

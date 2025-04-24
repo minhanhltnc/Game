@@ -36,6 +36,7 @@
 		<Unit filename="defs.h" />
 		<Unit filename="game.h" />
 		<Unit filename="graphics.h" />
+		<Unit filename="highscore.h" />
 		<Unit filename="intro_outro.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="pipes.h" />

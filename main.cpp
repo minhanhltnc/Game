@@ -12,7 +12,7 @@
 #include "sprites.h"
 #include "pipes.h"
 #include "intro_outro.h"
-
+#include "highscore.h"
 using namespace std;
 
 int main(int argc, char *argv[]) {
@@ -22,6 +22,8 @@ int main(int argc, char *argv[]) {
     bool quit = false;
     GameState currentState = MENU;
     bool soundOn = true;
+    int highScore = loadHighScore("highscore.txt");
+
 ///set up các tài nguyên game
     // BG
     ScrollingBackground background;
@@ -121,18 +123,26 @@ int main(int argc, char *argv[]) {
                 background.scroll(SCOLL_BG);
                 graphics.render(mouse, bird);
                 graphics.renderPipes(pipeList, pipeTexture);
+                //
                 int presScore=mouse.score;
                 mouse.updateScore(pipeList);
                 if(presScore!=mouse.score&&soundOn)graphics.play(gChunk_point,1);
-                graphics.renderScore(fontScoreInPlaying, mouse.score, 20, 20, {255, 255, 255, 255});
+                graphics.renderScore(fontScoreInPlaying,"Score: ", mouse.score, 20, 20, {255, 255, 255, 255});
             }
             else {
                 currentState = GAME_OVER;
             }
         }
-        else if (currentState == GAME_OVER) {
+        else if (currentState == GAME_OVER)
+        {
+            if (mouse.score > highScore)
+            {highScore = mouse.score;
+            saveHighScore("highscore.txt", highScore);
+
+            }
             renderGameOver(graphics, font);
-            graphics.renderScore(fontScoreInGameOver, mouse.score, 150, 120, {255, 255, 0, 255});
+            graphics.renderScore(fontScoreInPlaying,"Highest Score: ", highScore, 150, 220, {255, 105, 0, 255});
+            graphics.renderScore(fontScoreInGameOver,"Score: ", mouse.score, 150, 120, {255, 255, 100, 255});
         }
 
         graphics.presentScene();
