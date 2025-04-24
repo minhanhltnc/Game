@@ -17,8 +17,8 @@
 #define REPLAY_BUT "Play Again"
 #define BACK_MENU_BUT "Back to Menu"
 const int TITLE_OFFSET = -100;
-const int PLAY_OFFSET = 100;
-const int SOUND_OFFSET = 200;
+const int PLAY_OFFSET = 50;
+const int SOUND_OFFSET = 150;
 const int REPLAY_OFFSET = 0;
 const int BACK_OFFSET = 100;
 const int GAMEOVER_OFFSET = -100;

@@ -4,7 +4,7 @@
 	<SDL.h>
 	<SDL_image.h>
 
-1745502113 source:d:\proj\my game\main.cpp
+1745502805 source:d:\proj\my game\main.cpp
 	<iostream>
 	<SDL.h>
 	<SDL_image.h>
@@ -80,7 +80,7 @@
 	"graphics.h"
 	"defs.h"
 
-1745498932 d:\proj\my game\intro_outro.h
+1745502881 d:\proj\my game\intro_outro.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>

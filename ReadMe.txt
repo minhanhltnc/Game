@@ -5,11 +5,11 @@ Lớp:CS6
 
 Chủ đề game:flappy bird remake có đồ họa đơn giản.
 Ngưỡng điểm target: 7-8
-Lý do cho ngưỡng điểm target : game có đồ họa và logic  đơn giản, chủ yếu tham khảo từ code mẫu, có phát triển thêm một số tính năng.Code còn dài, chưa dễ đọc.
+Lý do cho ngưỡng điểm target : game có đồ họa và logic  đơn giản, chủ yếu tham khảo từ code mẫu, có phát triển thêm một số tính năng
 
 I.Nguồn hình ảnh và nhạc
 https://github.com/samuelcust/flappy-bird-assets
-nhạc nền: em không tìm lại được nguồn dowdload
+
 
 II.CÁC PHẦN LẤY TỪ CODE MẪU
 +khung của hàm main 
@@ -35,11 +35,12 @@ Checklist
 4.Animation (hoạt hình)
 5.Xử lý va chạm
 6.Score (có tính điểm)
-7.Sound
-8.Sound on off
-9.Background music
-10.Font
-11.Menu
+7.HighestScore
+8.Sound
+9.Sound on off
+10.Background music
+11.Font
+12.Menu
 
 
 

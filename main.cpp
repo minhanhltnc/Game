@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     bool quit = false;
     GameState currentState = MENU;
     bool soundOn = true;
-    int highScore = loadHighScore("highscore.txt");
+    int highestScore = loadHighScore("highscore.txt");
 
 ///set up các tài nguyên game
     // BG
@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
     // Fonts
     TTF_Font* font = graphics.loadFont(FONT_NAME, 90);
     TTF_Font* fontScoreInGameOver = graphics.loadFont(FONT_NAME, 125);
-    TTF_Font* fontScoreInPlaying = graphics.loadFont(FONT_NAME, 50);
+    TTF_Font* fontScoreInPlaying = graphics.loadFont(FONT_NAME, 60);
     // Mouse
     Mouse mouse(START_POS, SCREEN_HEIGHT / 2);
     Sprite bird;
@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
                 int presScore=mouse.score;
                 mouse.updateScore(pipeList);
                 if(presScore!=mouse.score&&soundOn)graphics.play(gChunk_point,1);
-                graphics.renderScore(fontScoreInPlaying,"Score: ", mouse.score, 20, 20, {255, 255, 255, 255});
+                graphics.renderScore(fontScoreInPlaying,"Score: ", mouse.score, 20, 20, {255, 100, 100, 255});
             }
             else {
                 currentState = GAME_OVER;
@@ -135,13 +135,13 @@ int main(int argc, char *argv[]) {
         }
         else if (currentState == GAME_OVER)
         {
-            if (mouse.score > highScore)
-            {highScore = mouse.score;
-            saveHighScore("highscore.txt", highScore);
+            if (mouse.score > highestScore)
+            {highestScore = mouse.score;
+            saveHighScore("highscore.txt", highestScore);
 
             }
             renderGameOver(graphics, font);
-            graphics.renderScore(fontScoreInPlaying,"Highest Score: ", highScore, 150, 220, {255, 105, 0, 255});
+            graphics.renderScore(fontScoreInPlaying,"Highest Score: ", highestScore, 150, 220, {255, 105, 0, 255});
             graphics.renderScore(fontScoreInGameOver,"Score: ", mouse.score, 150, 120, {255, 255, 100, 255});
         }
 
