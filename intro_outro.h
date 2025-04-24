@@ -16,6 +16,13 @@
 #define GAMEOVER_BUT "Game Over"
 #define REPLAY_BUT "Play Again"
 #define BACK_MENU_BUT "Back to Menu"
+const int TITLE_OFFSET = -100;
+const int PLAY_OFFSET = 100;
+const int SOUND_OFFSET = 200;
+const int REPLAY_OFFSET = 0;
+const int BACK_OFFSET = 100;
+const int GAMEOVER_OFFSET = -100;
+
 
 // Enum game state
 enum GameState {
@@ -59,11 +66,11 @@ void renderButton(Graphics& graphics, Button& button) {
 
 ///render menu
 void renderMenu(Graphics& graphics, TTF_Font* font, bool soundOn) {
-    Button titleButton = createButton(TITLE, font, graphics, -50);
-    Button playButton = createButton(PLAY_BUT, font, graphics, 100);
+    Button titleButton = createButton(TITLE, font, graphics, TITLE_OFFSET);
+    Button playButton = createButton(PLAY_BUT, font, graphics, PLAY_OFFSET);
 
     string soundText = soundOn ? SOUND_ON_BUT : SOUND_OFF_BUT;
-    Button soundButton = createButton(soundText, font, graphics, 180);
+    Button soundButton = createButton(soundText, font, graphics, SOUND_OFFSET);
 
     /// Render buttons
     renderButton(graphics, titleButton);
@@ -77,9 +84,9 @@ void renderMenu(Graphics& graphics, TTF_Font* font, bool soundOn) {
 
 /// render game over screen
 void renderGameOver(Graphics& graphics, TTF_Font* font) {
-    Button overButton = createButton(GAMEOVER_BUT, font, graphics, -100);
-    Button playAgainButton = createButton(REPLAY_BUT, font, graphics, 0);
-    Button backToMenuButton = createButton(BACK_MENU_BUT, font, graphics, 100);
+    Button overButton = createButton(GAMEOVER_BUT, font, graphics,GAMEOVER_OFFSET );
+    Button playAgainButton = createButton(REPLAY_BUT, font, graphics, REPLAY_OFFSET);
+    Button backToMenuButton = createButton(BACK_MENU_BUT, font, graphics, BACK_OFFSET);
 
     // Render buttons
     renderButton(graphics, overButton);

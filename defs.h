@@ -31,6 +31,9 @@ const double PIPE_SPACING = 200; // khoảng cách giữa các pipes
 #define PIPES_IMG "img\\long_pipe_1_5x.png"
 #define FONT_NAME "img\\FlappyBirdRegular-9Pq0.ttf"
 #define CHUNK_WING "sound\\audio\\wing.wav"
+#define CHUNK_POINT "sound\\audio\\point.wav"
+
+
 
 
 

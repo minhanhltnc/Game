@@ -6,6 +6,7 @@
 #include "pipes.h"
 #define CHEESE_SIZE 10
 #define MOUSE_SIZE 20
+
 using namespace std;
 bool inside(int x, int y, SDL_Rect r) {
     return x > r.x && x < r.x+r.w && y > r.y && y < r.y+r.h;
@@ -65,7 +66,7 @@ struct Mouse {
 
     void updateScore(const vector<pipes>& pipeList) {
 
-    for (int i = 0; i < pipeList.size(); ++i)
+    for (int i = 0; i <(int) pipeList.size(); ++i)
     {
         int pipeRight = pipeList[i].topRect.x + pipeList[i].topRect.w;
         if (pipeRight < x&& lastScoredPipeIndex != i ) {

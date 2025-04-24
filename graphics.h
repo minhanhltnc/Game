@@ -121,7 +121,7 @@ struct Graphics {
 
 
 ///render spites
-     void render(double x, double y, const Sprite& sprite)const {
+     void render(int x, int y, const Sprite& sprite)const {
         const SDL_Rect* clip = sprite.getCurrentClip();
         SDL_Rect renderQuad = {x, y, clip->w, clip->h};
         SDL_RenderCopy(renderer, sprite.texture, clip, &renderQuad);
@@ -163,9 +163,9 @@ struct Graphics {
         }
         return gChunk;
     }
-    void play(Mix_Chunk* gChunk) {
+    void play(Mix_Chunk* gChunk, int channel) {
         if (gChunk != nullptr) {
-            Mix_PlayChannel( -1, gChunk, 0 );
+            Mix_PlayChannel( channel, gChunk, 0 );
         }
     }
 ///FONT
@@ -177,6 +177,7 @@ struct Graphics {
                            SDL_LOG_PRIORITY_ERROR,
                            "Load font %s", TTF_GetError());
         }
+        return gFont;
     }
      SDL_Texture* renderText(const char* text,TTF_Font* font, SDL_Color textColor)const
     {
@@ -199,7 +200,7 @@ struct Graphics {
         SDL_FreeSurface( textSurface );
         return texture;
     }
-    renderScore(TTF_Font* font, const int score,const int x,const int y, SDL_Color color)const {
+    void renderScore(TTF_Font* font, const int score,const int x,const int y, SDL_Color color)const {
     string scoreText = "Score: " + std::to_string(score);
     SDL_Texture* scoreTex = renderText(scoreText.c_str(), font, color);
 
