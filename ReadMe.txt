@@ -26,6 +26,7 @@ III.CÁC PHẦN PHÁT TRIỂN TỪ CODE MẪU && TỰ VIẾT
 +xử lý các ống:lấy từ khung code mẫu(bài va chạm), tự viết logic về vị trí các ống, di chuyển của ống)
 +làm menu: tham khảo stage machine lazyfoo(https://lazyfoo.net/articles/article06/index.php),
 button(https://lazyfoo.net/SDL_tutorials/lesson09/index.php) kết hợp với phần hiển thị chữ trong code mẫu.
++highestscore
 
 IV.
 Checklist 
