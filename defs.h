@@ -25,7 +25,6 @@ const double START_X = 400;
 const double PIPE_SPACING = 200; // khoảng cách giữa các pipes
 
 //duong dan
-#define BIRD_SPRITE_FILE  "img\\extended_flappybird_sprite.png"
 #define BACKGROUND_IMG "img\\bg.jpg"
 #define BACKGROUND_MUSIC "sound\\background.mp3"
 #define PIPES_IMG "img\\long_pipe_1_5x.png"

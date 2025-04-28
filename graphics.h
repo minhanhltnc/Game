@@ -149,6 +149,7 @@ struct Graphics {
 
         if (Mix_PlayingMusic() == 0) {
             Mix_PlayMusic( gMusic, -1 );
+           // Mix_VolumeMusic(100);
         }
         else if( Mix_PausedMusic() == 1 ) {
             Mix_ResumeMusic();
@@ -166,6 +167,7 @@ struct Graphics {
     void play(Mix_Chunk* gChunk, int channel) {
         if (gChunk != nullptr) {
             Mix_PlayChannel( channel, gChunk, 0 );
+            ///Mix_VolumeMusic(50);
         }
     }
 ///FONT

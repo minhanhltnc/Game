@@ -16,13 +16,14 @@
 #define GAMEOVER_BUT "Game Over"
 #define REPLAY_BUT "Play Again"
 #define BACK_MENU_BUT "Back to Menu"
-const int TITLE_OFFSET = -100;
-const int PLAY_OFFSET = 50;
-const int SOUND_OFFSET = 150;
+
+const int TITLE_OFFSET = -150;
+const int PLAY_OFFSET = -50;
+const int SOUND_OFFSET = 50;
+const int COLOR_OFFSET = 150;
 const int REPLAY_OFFSET = 0;
 const int BACK_OFFSET = 100;
 const int GAMEOVER_OFFSET = -100;
-
 
 // Enum game state
 enum GameState {
@@ -31,14 +32,21 @@ enum GameState {
     GAME_OVER
 };
 
-// Button struct to store texture and position
+// Enum bird color
+enum BirdColor {
+    BLUE,
+    RED,
+    YELLOW
+};
+
+// Button struct
 struct Button {
     SDL_Texture* texture;
     int x, y, w, h;
 };
 
-/// Create button
-Button createButton(const string& text, TTF_Font* font, Graphics& graphics, int yOffset) {
+// Tạo button
+Button createButton(const std::string& text, TTF_Font* font, Graphics& graphics, int yOffset) {
     SDL_Color white = {255, 255, 255, 255};
     SDL_Texture* texture = graphics.renderText(text.c_str(), font, white);
     int w, h;
@@ -49,46 +57,51 @@ Button createButton(const string& text, TTF_Font* font, Graphics& graphics, int 
     button.w = w;
     button.h = h;
     button.x = (SCREEN_WIDTH - w) / 2;
-    button.y = (SCREEN_HEIGHT - h) / 2 + yOffset;//yOffset dịch chuyển y
-
+    button.y = (SCREEN_HEIGHT - h) / 2 + yOffset;
     return button;
 }
 
-///destroy button
+// Hủy button
 void destroyButton(Button& button) {
     SDL_DestroyTexture(button.texture);
 }
 
-/// render a button
+// Vẽ button
 void renderButton(Graphics& graphics, Button& button) {
     graphics.renderTexture(button.texture, button.x, button.y);
 }
 
-///render menu
-void renderMenu(Graphics& graphics, TTF_Font* font, bool soundOn) {
+// Vẽ menu
+void renderMenu(Graphics& graphics, TTF_Font* font, bool soundOn, BirdColor currentBirdColor) {
     Button titleButton = createButton(TITLE, font, graphics, TITLE_OFFSET);
     Button playButton = createButton(PLAY_BUT, font, graphics, PLAY_OFFSET);
 
-    string soundText = soundOn ? SOUND_ON_BUT : SOUND_OFF_BUT;
+    std::string soundText = soundOn ? SOUND_ON_BUT : SOUND_OFF_BUT;
     Button soundButton = createButton(soundText, font, graphics, SOUND_OFFSET);
 
-    /// Render buttons
+    std::string colorText;
+    if (currentBirdColor == BLUE) colorText = "Bird Color: Blue";
+    else if (currentBirdColor == RED) colorText = "Bird Color: Red";
+    else colorText = "Bird Color: Yellow";
+    Button colorButton = createButton(colorText, font, graphics, COLOR_OFFSET);
+
     renderButton(graphics, titleButton);
     renderButton(graphics, playButton);
     renderButton(graphics, soundButton);
+    renderButton(graphics, colorButton);
 
     destroyButton(titleButton);
     destroyButton(playButton);
     destroyButton(soundButton);
+    destroyButton(colorButton);
 }
 
-/// render game over screen
+// Vẽ màn hình Game Over
 void renderGameOver(Graphics& graphics, TTF_Font* font) {
-    Button overButton = createButton(GAMEOVER_BUT, font, graphics,GAMEOVER_OFFSET );
+    Button overButton = createButton(GAMEOVER_BUT, font, graphics, GAMEOVER_OFFSET);
     Button playAgainButton = createButton(REPLAY_BUT, font, graphics, REPLAY_OFFSET);
     Button backToMenuButton = createButton(BACK_MENU_BUT, font, graphics, BACK_OFFSET);
 
-    // Render buttons
     renderButton(graphics, overButton);
     renderButton(graphics, playAgainButton);
     renderButton(graphics, backToMenuButton);
@@ -98,6 +111,7 @@ void renderGameOver(Graphics& graphics, TTF_Font* font) {
     destroyButton(backToMenuButton);
 }
 
+// Kiểm tra click
 bool isButtonClicked(int mouseX, int mouseY, const Button& button) {
     return (mouseX >= button.x && mouseX <= button.x + button.w &&
             mouseY >= button.y && mouseY <= button.y + button.h);

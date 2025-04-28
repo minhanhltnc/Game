@@ -19,7 +19,7 @@ bool overlap(const SDL_Rect& r1, const SDL_Rect& r2) {
 struct Mouse {
     SDL_Rect rect;
     int x = START_POS, y = SCREEN_HEIGHT / 2;
-    int score ; vector<bool> passedPipe;
+    int score ;
     int UP_SPEED,FALL_SPEED;
     int lastScoredPipeIndex = -1; // Lưu chỉ số pipe đã được cộng điểm gần nhất
 
@@ -77,7 +77,6 @@ struct Mouse {
     }
     }
 }
-
 
 
 };

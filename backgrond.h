@@ -17,7 +17,7 @@ struct ScrollingBackground {
         SDL_QueryTexture(texture, NULL, NULL, &width, &height);
     }
 
-    void scroll(int  distance) {
+    void scroll(const int  distance)  {
         scrollingOffset -= distance;
         if( scrollingOffset <= 0 ) { scrollingOffset = width; }
 
